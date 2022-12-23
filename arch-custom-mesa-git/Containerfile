@@ -26,8 +26,8 @@ cd yay-bin && \
 makepkg -si --noconfirm && \
 cd .. && \
 rm -drf yay-bin && \
-yay -S aur/protonup-qt aur/mangohud aur/obs-vkcapture aur/protontricks aur/goverlay-bin aur/libstrangle aur/vkbasalt aur/lib32-vkbasalt --noconfirm && \
-yay -S chaotic-aur/lib32-mesa-tkg-git chaotic-aur/mesa-tkg-git --noconfirm
+yay -S chaotic-aur/lib32-mesa-tkg-git chaotic-aur/mesa-tkg-git --noconfirm && \
+yay -S aur/protonup-qt aur/mangohud aur/obs-vkcapture aur/protontricks aur/goverlay-bin aur/libstrangle aur/vkbasalt aur/lib32-vkbasalt --noconfirm
 
 # Cleanup AUR
 USER root
