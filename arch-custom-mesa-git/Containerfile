@@ -11,7 +11,7 @@ pacman -S steam lutris solaar --noconfirm
 RUN pacman-key --init
 RUN pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com
 RUN pacman-key --lsign-key FBA220DFC880C036
-RUN pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
+RUN pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --noconfirm
 RUN printf "\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist\n" | sudo tee -a /etc/pacman.conf
 RUN pacman -Syu
 RUN pacman -S lib32-mesa-tkg-git mesa-tkg-git --noconfirm
