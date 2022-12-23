@@ -14,7 +14,6 @@ RUN pacman-key --lsign-key FBA220DFC880C036
 RUN pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --noconfirm
 RUN printf "\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist\n" | sudo tee -a /etc/pacman.conf
 RUN pacman -Syu --noconfirm
-RUN printf 'y\ny\n' | pacman -S lib32-mesa-tkg-git mesa-tkg-git --noconfirm
 
 # AUR
 RUN useradd -m --shell=/bin/bash build && usermod -L build && \
@@ -27,7 +26,8 @@ cd yay-bin && \
 makepkg -si --noconfirm && \
 cd .. && \
 rm -drf yay-bin && \
-yay -S aur/protonup-qt aur/mangohud aur/obs-vkcapture aur/protontricks aur/goverlay-bin aur/libstrangle aur/vkbasalt aur/lib32-vkbasalt --noconfirm
+yay -S aur/protonup-qt aur/mangohud aur/obs-vkcapture aur/protontricks aur/goverlay-bin aur/libstrangle aur/vkbasalt aur/lib32-vkbasalt --noconfirm && \
+yay -S chaotic-aur/lib32-mesa-tkg-git chaotic-aur/mesa-tkg-git --noconfirm
 
 # Cleanup AUR
 USER root
