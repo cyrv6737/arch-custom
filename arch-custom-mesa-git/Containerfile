@@ -8,8 +8,8 @@ pacman -S base-devel git --noconfirm && \
 pacman -S steam lutris solaar --noconfirm
 
 # Enable Chaotic AUR and install mesa-git
-RUN pacman-key --init && \
-pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com && \
+RUN pacman-key --init
+RUN pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com && \
 pacman-key --lsign-key FBA220DFC880C036 && \
 pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' && \
 printf "\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist\n" | sudo tee -a /etc/pacman.conf && \
