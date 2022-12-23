@@ -1,4 +1,4 @@
-name: build-arch-custom
+name: build-arch-custom-nvidia
 on:
   push:
     paths:
