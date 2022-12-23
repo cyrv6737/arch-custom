@@ -1,0 +1,34 @@
+FROM docker.io/archlinux:base-devel
+
+# Pacman
+RUN sed -i 's/#Color/Color/g' /etc/pacman.conf && \
+printf "[multilib]\nInclude = /etc/pacman.d/mirrorlist\n" | sudo tee -a /etc/pacman.conf && \
+pacman -Syu --noconfirm && \
+pacman -S base-devel git lib32-mesa lib32-vulkan-radeon vulkan-radeon --noconfirm && \
+pacman -S steam lutris solaar --noconfirm
+
+# AUR
+RUN useradd -m --shell=/bin/bash build && usermod -L build && \
+echo "build ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+echo "root ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+USER build
+WORKDIR /home/build
+RUN git clone https://aur.archlinux.org/yay-bin.git && \
+cd yay-bin && \
+makepkg -si --noconfirm && \
+cd .. && \
+rm -drf yay-bin && \
+yay -S aur/protonup-qt aur/mangohud aur/obs-vkcapture aur/protontricks aur/goverlay-bin aur/libstrangle aur/vkbasalt aur/lib32-vkbasalt --noconfirm
+
+# Cleanup AUR
+USER root
+WORKDIR /
+RUN  userdel -r build && \
+rm -drf /home/build
+
+# Custom
+RUN git clone https://github.com/DavidoTek/ProtonUp-Qt.git && \
+cp ProtonUp-Qt/share/applications/net.davidotek.pupgui2.desktop /usr/share/applications/protonup-qt.desktop && \
+sed -i 's,Exec=net.davidotek.pupgui2,Exec=/usr/bin/python -m pupgui2 "$@",g' /usr/share/applications/protonup-qt.desktop && \
+cp -r ProtonUp-Qt/share/icons /usr/share/icons && \
+rm -drf ProtonUp-QT
