@@ -33,3 +33,5 @@ cp ProtonUp-Qt/share/applications/net.davidotek.pupgui2.desktop /usr/share/appli
 sed -i 's,Exec=net.davidotek.pupgui2,Exec=/usr/bin/python -m pupgui2 "$@",g' /usr/share/applications/protonup-qt.desktop && \
 cp -r ProtonUp-Qt/share/icons /usr/share/icons && \
 rm -drf ProtonUp-QT
+
+CMD ["sudo ln -s /usr/bin/distrobox-host-exec /usr/bin/xdg-open"]
