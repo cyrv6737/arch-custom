@@ -24,10 +24,13 @@ yay -S aur/protonup-qt aur/mangohud aur/obs-vkcapture aur/protontricks aur/gover
 RUN git clone https://github.com/Frogging-Family/nvidia-all.git && \
 cd nvidia-all && \
 sed -i 's/_driver_branch=""/_driver_branch="regular"/g' customization.cfg && \
-sed -i 's,_driver_version="",_driver_version=\"'"$(cat PKGBUILD | grep -A 1 "\"\$CONDITION\" = \"2\"" | grep "_driver_version" | head -1 | cut -d '=' -f 2 | cut -d '\'' -f 1)"'\",g' customization.cfg && \
+cat PKGBUILD | grep -A 1 "\"\$CONDITION\" = \"2\"" | grep "_driver_version" | head -1 | cut -d '=' -f 2 | cut -d "'" -f 1 > driver.ver && \
+sed -i 's,_driver_version="",_driver_version=\"'"$(cat driver.ver)"'\",g' customization.cfg && \
 sed -i 's/_open_source_modules=""/_open_source_modules="false"/g' customization.cfg && \
 sed -i 's/_dkms=""/_dkms="false"/g' customization.cfg && \
-makepkg -si --noconfirm
+makepkg -si --noconfirm && \
+cd .. && \
+rm -drf nvidia-all
 
 # Cleanup AUR
 USER root
