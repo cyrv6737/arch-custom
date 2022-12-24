@@ -27,11 +27,14 @@ WORKDIR /
 RUN  userdel -r build && \
 rm -drf /home/build
 
-# Custom
+# Fix ProtonupQT
 RUN git clone https://github.com/DavidoTek/ProtonUp-Qt.git && \
 cp ProtonUp-Qt/share/applications/net.davidotek.pupgui2.desktop /usr/share/applications/protonup-qt.desktop && \
 sed -i 's,Exec=net.davidotek.pupgui2,Exec=/usr/bin/python -m pupgui2 "$@",g' /usr/share/applications/protonup-qt.desktop && \
 cp -r ProtonUp-Qt/share/icons /usr/share/icons && \
 rm -drf ProtonUp-QT
 
-CMD ["sudo ln -s /usr/bin/distrobox-host-exec /usr/bin/xdg-open"]
+# Integrate xdg-open with the host
+RUN git clone https://github.com/89luca89/distrobox.git && \
+cp distrobox/distrobox-host-exec /usr/bin/distrobox-host-exec && \
+ln -s /usr/bin/distrobox-host-exec /usr/bin/xdg-open
