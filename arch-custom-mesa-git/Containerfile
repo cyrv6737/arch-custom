@@ -5,7 +5,7 @@ RUN sed -i 's/#Color/Color/g' /etc/pacman.conf && \
 printf "[multilib]\nInclude = /etc/pacman.d/mirrorlist\n" | sudo tee -a /etc/pacman.conf && \
 sed -i 's/#MAKEFLAGS="-j2"/MAKEFLAGS="-j$(nproc)"/g' /etc/makepkg.conf && \
 pacman -Syu --noconfirm && \
-pacman -S base-devel git --noconfirm && \
+pacman -S wget base-devel git --noconfirm && \
 pacman -S steam lutris solaar --noconfirm
 
 # Enable Chaotic AUR and install mesa-git
@@ -42,3 +42,15 @@ cp ProtonUp-Qt/share/applications/net.davidotek.pupgui2.desktop /usr/share/appli
 sed -i 's,Exec=net.davidotek.pupgui2,Exec=/usr/bin/python -m pupgui2 "$@",g' /usr/share/applications/protonup-qt.desktop && \
 cp -r ProtonUp-Qt/share/icons /usr/share/icons && \
 rm -drf ProtonUp-QT
+
+# Integrate xdg-open with the host
+RUN git clone https://github.com/89luca89/distrobox.git && \
+cp distrobox/distrobox-host-exec /usr/bin/distrobox-host-exec && \
+rm -f /usr/bin/xdg-open && \
+ln -s /usr/bin/distrobox-host-exec /usr/bin/xdg-open && \
+ln -s /usr/bin/distrobox-host-exec /usr/bin/flatpak && \
+ln -s /usr/bin/distrobox-host-exec /usr/bin/firefox && \
+wget https://github.com/1player/host-spawn/releases/download/$(cat distrobox/distrobox-host-exec | grep host_spawn_version= | cut -d "\"" -f 2)/host-spawn-$(uname -m) -O distrobox/host-spawn && \
+cp distrobox/host-spawn /usr/bin/host-spawn && \
+chmod +x /usr/bin/host-spawn && \
+rm -drf distrobox
