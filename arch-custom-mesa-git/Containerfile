@@ -3,6 +3,7 @@ FROM docker.io/archlinux:base-devel
 # Pacman
 RUN sed -i 's/#Color/Color/g' /etc/pacman.conf && \
 printf "[multilib]\nInclude = /etc/pacman.d/mirrorlist\n" | sudo tee -a /etc/pacman.conf && \
+sed -i 's/#MAKEFLAGS="-j2"/MAKEFLAGS="-j$(nproc)"/g' /etc/makepkg.conf && \
 pacman -Syu --noconfirm && \
 pacman -S base-devel git --noconfirm && \
 pacman -S steam lutris solaar --noconfirm
