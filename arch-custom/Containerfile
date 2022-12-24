@@ -34,11 +34,14 @@ sed -i 's,Exec=net.davidotek.pupgui2,Exec=/usr/bin/python -m pupgui2 "$@",g' /us
 cp -r ProtonUp-Qt/share/icons /usr/share/icons && \
 rm -drf ProtonUp-QT
 
-# Integrate make host aware of xdg-open, flatpak, and firefox
-# Note: Currently xdg-open gets slightly malformed by the 'sed' operation, however I have refrained from symlinking so a clean distrobox-host-exec is installed by distrobox
+# Integrate xdg-open with the host
 RUN git clone https://github.com/89luca89/distrobox.git && \
+cp distrobox/distrobox-host-exec /usr/bin/distrobox-host-exec && \
 rm -f /usr/bin/xdg-open && \
-cat distrobox/distrobox-host-exec | tee /usr/bin/xdg-open && \
-sed -i 's/non_interactive=0/non_interactive=1/g' /usr/bin/xdg-open && \
-chmod +x /usr/bin/xdg-open && \
+ln -s /usr/bin/distrobox-host-exec /usr/bin/xdg-open && \
+ln -s /usr/bin/distrobox-host-exec /usr/bin/flatpak && \
+ln -s /usr/bin/distrobox-host-exec /usr/bin/firefox && \
+wget https://github.com/1player/host-spawn/releases/download/$(cat distrobox/distrobox-host-exec | grep host_spawn_version= | cut -d "\"" -f 2)/host-spawn-$(uname -m) -O distrobox/host-spawn && \
+cp distrobox/host-spawn /usr/bin/host-spawn && \
+chmod +x /usr/bin/host-spawn && \
 rm -drf distrobox
