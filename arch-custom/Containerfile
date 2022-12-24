@@ -37,5 +37,6 @@ rm -drf ProtonUp-QT
 # Integrate xdg-open with the host
 RUN git clone https://github.com/89luca89/distrobox.git && \
 cp distrobox/distrobox-host-exec /usr/bin/distrobox-host-exec && \
+rm -f /usr/bin/xdg-open && \
 ln -s /usr/bin/distrobox-host-exec /usr/bin/xdg-open && \
 rm -drf distrobox
